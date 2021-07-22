@@ -208,4 +208,3 @@ bst_n_ptr binary_search_tree<T>::_maximum(bst_n_ptr _temp_root){
 	}
 	return _temp_root;
 }
-}
