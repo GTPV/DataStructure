@@ -60,8 +60,8 @@ struct binary_search_tree_node{
 typedef binary_search_tree_node* bst_n_ptr;
 
 template<class T>
-bool first_less_than_second(const T& first, const T& second){
-	return first < second;
+bool _first_less_than_second(const T& _first, const T& _second){
+	return _first < _second;
 }
 
 
@@ -69,16 +69,16 @@ template <class T>
 class binary_search_tree{
 public:
 	binary_search_tree();
-	bst_n_ptr search(const T& value);
-	void insert(const T& value);
-	bool remove(const T& value);
+	bst_n_ptr search(const T& _value);
+	void insert(const T& _value);
+	bool remove(const T& _value);
 private:
 	bst_n_ptr root;
 	bst_n_ptr leaf;
-	void _transplant(bst_n_ptr before, bst_n_ptr after);
+	void _transplant(bst_n_ptr _before, bst_n_ptr _after);
 	bool (*_comparison_function)(const T&, const T&);
-	bst_n_ptr _minimum_from_right(bst_n_ptr temp_root);
-	bst_n_ptr _maximum_from_left(bst_n_ptr temp_root);
+	bst_n_ptr _minimum_from_right(bst_n_ptr _temp_root);
+	bst_n_ptr _maximum_from_left(bst_n_ptr _temp_root);
 };
 
 
@@ -89,7 +89,7 @@ binary_search_tree<T>::binary_search_tree(){
 	leaf.left_child = nullptr;
 	leaf.right_child = nullptr;
 	root = leaf;
-	_comparison_function = first_less_than_second;
+	_comparison_function = _first_less_than_second;
 }
 
 template <class T>
@@ -103,14 +103,14 @@ binary_search_tree<T>::binary_search_tree(bool (*cmp)(T&, T&)){
 }
 
 template <class T>
-bst_n_ptr binary_search_tree<T>::search(const T& value){
-	bst_n_ptr node_to_check = root;
+bst_n_ptr binary_search_tree<T>::search(const T& _value){
+	bst_n_ptr _node_to_check = root;
 
-	while(node_to_check != nullptr && node_to_check->value != value){
-		if(_comparison_function(value, _node_to_check->value)){
-			node_to_check = node_to_check->left_child;
+	while(_node_to_check != nullptr && _node_to_check->value != _value){
+		if(_comparison_function(_value, _node_to_check->value)){
+			_node_to_check = _node_to_check->left_child;
 		} else{
-			node_to_check = node_to_check->right_child;
+			_node_to_check = _node_to_check->right_child;
 		}
 	}
 
@@ -118,90 +118,94 @@ bst_n_ptr binary_search_tree<T>::search(const T& value){
 }
 
 template <class T>
-void binary_search_tree<T>::insert(const T& value){
-	bst_n_ptr node_to_insert = new binary_search_tree_node();
-	node_to_insert->value = value;
-	node_to_insert->parent = nullptr;
-	node_to_insert->left_child = leaf;
-	node_to_insert->right_child = leaf;
+void binary_search_tree<T>::insert(const T& _value){
+	bst_n_ptr _node_to_insert = new binary_search_tree_node();
+	_node_to_insert->value = _value;
+	_node_to_insert->parent = nullptr;
+	_node_to_insert->left_child = leaf;
+	_node_to_insert->right_child = leaf;
 
 	if(search(value) != nullptr) return;
 
-	bst_n_ptr where_to_insert = this->root;
+	bst_n_ptr _where_to_insert = this->root;
 
-	while(where_to_insert != leaf){
-		if(_comparison_function(value, where_to_insert->value)){
-			where_to_insert = where_to_insert->left_child;
+	while(_where_to_insert != leaf){
+		if(_comparison_function(value, _where_to_insert->value)){
+			_where_to_insert = _where_to_insert->left_child;
 		} else{
-			where_to_insert = where_to_insert->right_child;
+			_where_to_insert = _where_to_insert->right_child;
 		}
 	}
 
-	node_to_insert->parent = where_to_insert->parent;
+	_node_to_insert->parent = _where_to_insert->parent;
 
-	if(node_to_insert->parent == nullptr){
-		root = node_to_insert;
-	} else if(_comparison_function(node_to_insert->parent->value, node_to_insert->value)){
-		node_to_insert->parent->right_child = node_to_insert;
+	if(_node_to_insert->parent == nullptr){
+		root = _node_to_insert;
+	} else if(_comparison_function(_node_to_insert->parent->value, _node_to_insert->value)){
+		_node_to_insert->parent->right_child = _node_to_insert;
 	} else{
-		node_to_insert->parent->left_child = node_to_insert;
+		_node_to_insert->parent->left_child = _node_to_insert;
 	}
 }
 
 template <class T>
 bool binary_search_tree<T>::remove(const T& value){
-	bst_n_ptr node_to_remove = search(value);
+	bst_n_ptr _node_to_remove = search(value);
 
-	if(node_to_remove == nullptr){
+	if(_node_to_remove == nullptr){
 		return false;
 	} else{
-		bst_n_ptr node_to_replace;
+		bst_n_ptr _node_to_replace;
 
-		if(node_to_remove->left_child == leaf){
-			transplant(node_to_remove, node_to_remove->right_child);
-		} else if(node_to_remove->right_child == leaf){
-			transplant(node_to_remove, node_to_remove->left_child);
+		if(_node_to_remove->left_child == leaf){
+			transplant(_node_to_remove, _node_to_remove->right_child);
+		} else if(_node_to_remove->right_child == leaf){
+			transplant(_node_to_remove, _node_to_remove->left_child);
 		} else{
-			node_to_replace = _minimum(node_to_remove->right_child);
-			if(node_to_replace != node_to_remove){
-				transplant(node_to_replace, node_to_replace->right_child);
-				node_to_replace->right_child = node_to_remove->right_child;
-				transplant(node_to_remove, node_to_replace);
-				node_to_replace->left_child = node_to_remove->left_child_child;
-				node_to_replace->left_child->parent = node_to_replace;
-				node_to_replace->right_child->parent = node_to_replace;
+			_node_to_replace = _minimum(_node_to_remove->right_child);
+			if(_node_to_replace->parent != _node_to_remove){
+				transplant(_node_to_replace, _node_to_replace->right_child);
+				_node_to_replace->right_child = _node_to_remove->right_child;
+				transplant(_node_to_remove, _node_to_replace);
+				_node_to_replace->left_child = _node_to_remove->left_child;
+				_node_to_replace->left_child->parent = _node_to_replace;
+				_node_to_replace->right_child->parent = _node_to_replace;
+			} else{
+				transplant(_node_to_remove, _node_to_replace);
+				_node_to_replace->left_child = _node_to_remove->left_child;
+				_node_to_remove->left_child->parent = _node_to_replace;
 			}
 		}
-		delete node_to_remove;
+		delete _node_to_remove;
 		return true;
 }
 
 template <class T>
-void binary_search_tree<T>::_transplant(bst_n_ptr before, bst_n_ptr after){
-	if(before->parent == nullptr){
-		root = after;
-	} else if(before == before->parent->left_child){
-		before->parent->left_child = after;
+void binary_search_tree<T>::_transplant(bst_n_ptr _before, bst_n_ptr _after){
+	if(_before->parent == nullptr){
+		root = _after;
+	} else if(_before == _before->parent->left_child){
+		_before->parent->left_child = _after;
 	} else{
-		before->parent->right_child = after;
+		_before->parent->right_child = _after;
 	}
 
-	after->parent = before->parent;
+	_after->parent = _before->parent;
 }
 
 template <class T>
-bst_n_ptr binary_search_tree<T>::_minimum(bst_n_ptr temp_root){
-	while(temp_root->left_child != leaf){
-		temp_root = temp_root->left_child;
+bst_n_ptr binary_search_tree<T>::_minimum(bst_n_ptr _temp_root){
+	while(_temp_root->left_child != leaf){
+		_temp_root = _temp_root->left_child;
 	}
-	return temp_root;
+	return _temp_root;
 }
 
 template <class T>
-bst_n_ptr binary_search_tree<T>::_maximum(bst_n_ptr temp_root){
-	while(temp_root->right_child != leaf){
-		temp_root = temp_root->right_child;
+bst_n_ptr binary_search_tree<T>::_maximum(bst_n_ptr _temp_root){
+	while(_temp_root->right_child != leaf){
+		_temp_root = _temp_root->right_child;
 	}
-	return temp_root;
+	return _temp_root;
 }
 }
