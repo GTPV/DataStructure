@@ -32,7 +32,7 @@
 *				insert => Insert value to bst
 *				remove => Delete value from bst. Return false if node doesn't exist.
 *				search => Search value node, return node pointer. Return nullptr if node doesn't exist.
-*				_transplant => before-root-subtree <<(transplant)<< after-root-subtree
+*				_transplant => link before's parent to after. nothing to do with both's children
 *				_minimum => return minimum-value-node in (temp_root-root subtree including temp_root)
 *				_maximum => return maximum-value-node in (temp_root-root subtree including temp_root)
 *				_comparison_function => fuction to compare value
