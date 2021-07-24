@@ -2,6 +2,7 @@
 #include "binary_search_tree.cpp"
 
 int main(){
+	//TODO give function to use for comparison
 	binary_search_tree<int> BST;
 	bool Flag = true;
 	int Node;
