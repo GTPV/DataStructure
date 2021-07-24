@@ -178,6 +178,7 @@ bool binary_search_tree<T>::remove(const T& value){
 		}
 		delete _node_to_remove;
 		return true;
+	}
 }
 
 template <class T>
