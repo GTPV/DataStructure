@@ -19,11 +19,14 @@ int main(){
 				} else{
 					std::cout << "Node doesn't exist\n" << std::endl;
 				}
+				BST.print();
 				break;
 			case 2:
 				std::cout << "Input Node to insert\n" << std::endl;
 				std::cin >> Node;
 				BST.insert(Node);
+				std::cout << std::endl;
+				BST.print();
 				break;
 			case 3:
 				std::cout << "Input node to remove\n" << std::endl;
@@ -33,9 +36,13 @@ int main(){
 				} else{
 					std::cout << "Node doesn't exist\n" << std::endl;
 				}
+				std::cout << std::endl;
+				BST.print();
 				break;
 			case 4:
 				std::cout << "Size of tree : " << BST.size() << std::endl << std::endl;
+				std::cout << std::endl;
+				BST.print();
 				break;
 			default:
 				Flag = false;

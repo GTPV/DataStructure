@@ -46,6 +46,13 @@
 
 
 #pragma once
+#define PRINT
+#ifdef PRINT
+	#include <iostream>
+	#define PASS(x) x
+#else
+	#define PASS(x)
+#endif
 
 
 
@@ -74,6 +81,8 @@ public:
 	void insert(const T& _value);
 	bool remove(const T& _value);
 	unsigned long long size(void);
+	PASS(void print(void);)
+	PASS(void preorder(binary_search_tree_node<T>* _temp_root, binary_search_tree_node<T>** _array, int _temp_root_index);)
 private:
 	binary_search_tree_node<T>* root;
 	binary_search_tree_node<T>* leaf;
@@ -194,6 +203,36 @@ template <class T>
 unsigned long long binary_search_tree<T>::size(void){
 	return _size;
 }
+
+PASS(template <class T>)
+PASS(void binary_search_tree<T>::print(void){
+	if(_size == 0){
+		return;
+	} else{
+		binary_search_tree_node<T>* _binary_search_tree_array[1<<(_size+1)];
+		_binary_search_tree_array[1] = this->root;
+		preorder(this->root, _binary_search_tree_array, 1);
+
+		for(int _depth = 0; _depth < (_size+1); _depth++){
+			int _layer_size = 1<<_depth;
+			for(int _layer_index = 0; _layer_index < _layer_size; _layer_index++){
+				std::cout << _binary_search_tree_array[_layer_size + _layer_index]->value << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+})
+
+PASS(template <class T>)
+PASS(void binary_search_tree<T>::preorder(binary_search_tree_node<T>* _temp_root, binary_search_tree_node<T>** _array, int _temp_root_index){
+	_array[_temp_root_index] = _temp_root;
+	if(_temp_root == leaf){
+		return;
+	} else{
+		preorder(_temp_root->left_child, _array, _temp_root_index*2);
+		preorder(_temp_root->right_child, _array, _temp_root_index*2 + 1);
+	}
+})
 
 template <class T>
 void binary_search_tree<T>::_transplant(binary_search_tree_node<T>* _before, binary_search_tree_node<T>* _after){
