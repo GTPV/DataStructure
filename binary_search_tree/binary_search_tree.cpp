@@ -49,6 +49,7 @@
 #define PRINT
 #ifdef PRINT
 	#include <iostream>
+	#include <vector>
 	#define PASS(x) x
 #else
 	#define PASS(x)
@@ -82,7 +83,7 @@ public:
 	bool remove(const T& _value);
 	unsigned long long size(void);
 	PASS(void print(void);)
-	PASS(void preorder(binary_search_tree_node<T>* _temp_root, binary_search_tree_node<T>** _array, int _temp_root_index);)
+	PASS(void preorder(binary_search_tree_node<T>* _temp_root, std::vector<std::vector<binary_search_tree_node<T>*>>& _array, int _temp_root_index);)
 private:
 	binary_search_tree_node<T>* root;
 	binary_search_tree_node<T>* leaf;
@@ -209,14 +210,18 @@ PASS(void binary_search_tree<T>::print(void){
 	if(_size == 0){
 		return;
 	} else{
-		binary_search_tree_node<T>* _binary_search_tree_array[1<<(_size+1)];
-		_binary_search_tree_array[1] = this->root;
-		preorder(this->root, _binary_search_tree_array, 1);
+		std::vector<std::vector<binary_search_tree_node<T>*>> _binary_search_tree_array(_size+1);
+		preorder(this->root, _binary_search_tree_array, 0);
 
-		for(int _depth = 0; _depth < (_size+1); _depth++){
-			int _layer_size = 1<<_depth;
-			for(int _layer_index = 0; _layer_index < _layer_size; _layer_index++){
-				std::cout << _binary_search_tree_array[_layer_size + _layer_index]->value << " ";
+		for(int _depth = 0; _depth < _size+1; _depth++){
+			for(auto _node_to_print : _binary_search_tree_array[_depth]){
+				if(_node_to_print == leaf){
+					std::cout << " null ";
+				} else if(_node_to_print == root){
+					std::cout << " " << _node_to_print->value << " ";
+				} else{
+					std::cout << " (" << _node_to_print->parent->value << ")" << _node_to_print->value << " ";
+				}
 			}
 			std::cout << std::endl;
 		}
@@ -224,13 +229,13 @@ PASS(void binary_search_tree<T>::print(void){
 })
 
 PASS(template <class T>)
-PASS(void binary_search_tree<T>::preorder(binary_search_tree_node<T>* _temp_root, binary_search_tree_node<T>** _array, int _temp_root_index){
-	_array[_temp_root_index] = _temp_root;
+PASS(void binary_search_tree<T>::preorder(binary_search_tree_node<T>* _temp_root, std::vector<std::vector<binary_search_tree_node<T>*>>& _array, int _temp_root_depth){
+	_array[_temp_root_depth].push_back(_temp_root);
 	if(_temp_root == leaf){
 		return;
 	} else{
-		preorder(_temp_root->left_child, _array, _temp_root_index*2);
-		preorder(_temp_root->right_child, _array, _temp_root_index*2 + 1);
+		preorder(_temp_root->left_child, _array, _temp_root_depth+1);
+		preorder(_temp_root->right_child, _array, _temp_root_depth+ 1);
 	}
 })
 
