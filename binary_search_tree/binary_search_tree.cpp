@@ -210,11 +210,11 @@ PASS(void binary_search_tree<T>::print(void){
 	if(_size == 0){
 		return;
 	} else{
-		std::vector<std::vector<binary_search_tree_node<T>*>> _binary_search_tree_array(_size+1);
-		preorder(this->root, _binary_search_tree_array, 0);
+		std::vector<std::vector<binary_search_tree_node<T>*>> _binary_search_tree_vector(_size+1);
+		preorder(this->root, _binary_search_tree_vector, 0);
 
 		for(int _depth = 0; _depth < _size+1; _depth++){
-			for(auto _node_to_print : _binary_search_tree_array[_depth]){
+			for(auto _node_to_print : _binary_search_tree_vector[_depth]){
 				if(_node_to_print == leaf){
 					std::cout << " null ";
 				} else if(_node_to_print == root){
