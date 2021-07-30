@@ -229,7 +229,6 @@ PASS(void binary_search_tree<T>::print(void){
 
 PASS(template <class T>)
 PASS(void binary_search_tree<T>::bfs(std::vector<std::vector<binary_search_tree_node<T>*>>& _vec){
-//	_array[_temp_root_depth].push_back(_temp_root);
 	std::vector<binary_search_tree_node<T>*> _Last_Layer = _vec[_vec.size()-1];
 	std::vector<binary_search_tree_node<T>*> _Next_Layer;
 	bool _Count_None_Leaf = false;
