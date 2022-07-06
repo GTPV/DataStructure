@@ -34,15 +34,31 @@ private:
     red_black_tree_node<T>* leaf;
     
     unsigned long long _size;
-    bool (*comparison_function)(const T&, const T&);
+    std::function<bool(const T&, const T&)> _comparison_function;
 };
 
 template <class T>
 red_black_tree<T>::red_black_tree(){
+    leaf = new red_black_tree_node<T>;
+    leaf->color = black;
+    leaf->parent = nullptr;
+    leaf->left_child = nullptr;
+    leaf->right_child = nullptr;
+    root = leaf;
+    _size = 0;
+    _comparison_function = _first_less_than_second;
 }
 
 template <class T>
 red_black_tree<T>::red_black_tree(std::function<bool(const T&, const T&)> cmp){
+    leaf = new red_black_tree_node<T>;
+    leaf->color = black;
+    leaf->parent = nullptr;
+    leaf->left_child = nullptr;
+    leaf->right_child = nullptr;
+    root = leaf;
+    _size = 0;
+    _comparison_function = cmp;
 }
 
 template <class T>
@@ -59,4 +75,5 @@ bool red_black_tree<T>::remove(const T& _value){
 
 template <class T>
 unsigned long long red_black_tree<T>::size(void){
+    return _size;
 }
