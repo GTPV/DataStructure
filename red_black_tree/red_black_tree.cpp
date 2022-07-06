@@ -128,6 +128,8 @@ red_black_tree_node<T>* red_black_tree<T>::search(const T& _value){
             _node_to_return = _node_to_return->right_child;
         }
     }
+
+    return _node_to_return;
 }
 
 template <class T>
